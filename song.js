@@ -1,3 +1,4 @@
+
 //song list
 
 //song file name should be numerical order and number ,else wont work
@@ -147,7 +148,7 @@ export const songs = [
   {
     // 21
     songName: "thum hi ho",
-    filePath: "song/21.mp3",
+    filePath: "song/17.mp3",
     coverPath: "cover/ashiq2.jpg",
     artist: " arijit singh",
   },
@@ -200,4 +201,6 @@ export const songs = [
     coverPath: "cover/ashiq2.jpg",
     artist: "ankit tiwari",
   },
+
+
 ];

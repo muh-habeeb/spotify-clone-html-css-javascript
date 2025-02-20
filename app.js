@@ -2,7 +2,7 @@
 // song are in song.js file
 // app.js
 // INPORT SONGS
-import { songs } from "./song.js";
+import  {songs} from "./song.js";
 //CLEARING CONSOLE
 window.addEventListener("message", (event) => {
   if (
@@ -13,6 +13,25 @@ window.addEventListener("message", (event) => {
     console.clear();
   }
 });
+//about banner
+let aboutbanner = document.querySelector(".about_box");
+let aboutbtn = document.getElementById("about");
+let aboutbanner_close_btn=document.querySelector(".close");
+
+// functon to activate the about banner 
+aboutbtn.addEventListener("click", function() {
+    aboutbanner.classList.toggle("active");
+});
+// functon to close the about banner when the X is cliked
+aboutbanner_close_btn.addEventListener("click", function() {
+    aboutbanner.classList.remove("active");
+});
+
+
+// window.addEventListener("click",()=>{
+//   // if(aboutbanner.hasAttribute("active"))
+//   aboutbanner.classList.add("active");
+// })
 //LOADING SCREEN
 window.onload = function () {
   let controls = (document.querySelector(".contorls").style.display = "none");
@@ -65,6 +84,7 @@ document.addEventListener("DOMContentLoaded", () => {
     </div>`;
     songList.insertAdjacentHTML("beforeend", songItem); //ADING TO HTML
   });
+  //no use for this thing 
   let listBtn = document.querySelector(".song-item ");
   listBtn.addEventListener("click", () => {
     console.log("cliked");
@@ -85,12 +105,14 @@ document.addEventListener("DOMContentLoaded", () => {
       masterPlay.src = "./svg/circle-pause-regular.svg";
       masterSongName.innerHTML = songs[songIndex].songName;
       masterSongImg.src = songs[songIndex].coverPath;
+      // progressBar.value =0;
     } else {
       audioelem.pause();
       masterPlay.src = "./svg/circle-play-regular.svg";
       masterSongImg.src = songs[songIndex].coverPath;
       masterSongName.innerHTML = songs[songIndex].songName;
     }
+    // console.clear();
   });
   //procesing of full timing of the song
   const fulltime = () => {
@@ -105,6 +127,7 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       fullTimer.innerHTML = "00:00";
     }
+    // console.clear();
   };
 
   let progress = 0; // Define progress variable
@@ -277,3 +300,5 @@ document.addEventListener("DOMContentLoaded", () => {
     console.clear();
   });
 });
+
+
