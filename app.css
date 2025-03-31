@@ -17,12 +17,12 @@ body {
   justify-content: center;
   overflow: hidden;
 }
-  /* scroll bar style */
+/* scroll bar style */
 ::-webkit-scrollbar {
   width: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: linear-gradient(45deg,#0ef,#f0e);
+  background: linear-gradient(45deg, #0ef, #f0e);
   border-radius: 20px;
 }
 ::-webkit-scrollbar-thumb {
@@ -30,28 +30,28 @@ body {
   background: #ef0;
 }
 /*  about banner style */
-.about_box{
+.about_box {
   position: absolute;
   height: 250px;
   width: 350px;
   z-index: 99999;
   background: #139b8b;
   color: #fff;
-  top: -300PX;
+  top: -300px;
   border-radius: 20px;
   padding: 20px;
-display: flex;
-overflow: hidden;
-align-items: center;
-justify-content: center;
-text-transform: capitalize;
-}
-.about_box.active{
   display: flex;
-  transform: translateY(400PX);
+  overflow: hidden;
+  align-items: center;
+  justify-content: center;
+  text-transform: capitalize;
+}
+.about_box.active {
+  display: flex;
+  transform: translateY(400px);
 }
 
-.about_box .close{
+.about_box .close {
   background: transparent;
   position: relative;
   top: -100px;
@@ -61,17 +61,16 @@ text-transform: capitalize;
   overflow: hidden;
   align-items: center;
   display: flex;
-  justify-content: center;
-}.close::after{
-  content: "X";
-  font-size: 25px;
+  font-size: 35px;
   color: #99152f;
   font-weight: 800;
+  justify-content: center;
 }
-.about_box> h1{
+
+.about_box > h1 {
   font-size: 22px;
 }
-.about_box> h1{
+.about_box > h1 {
   font-size: 20px;
 }
 
@@ -123,17 +122,15 @@ li a {
   font-weight: bold;
 }
 
-/* continer */
+/* container */
 
 .container {
   background: #012420;
-  background:url("./asset/bg.jpg");
-  background: linear-gradient(to bottom right,#04e44f,#053933,#0ef3dc);
-  background-size:500% 1000%;
-  /* background-size: cover;*//* eneble when usig an image  */
+  background: linear-gradient(to bottom right, #04e44f, #053933, #0ef3dc);
+  background-size: 500% 1000%;
   background-position: center;
   background-repeat: no-repeat;
-  height: 650px;
+  height: 77vh;
   width: 1000px;
   position: relative;
   top: 85px;
@@ -143,18 +140,18 @@ li a {
   box-shadow: 0 10px 30px #040505;
   overflow: hidden;
   z-index: 1;
-  display: flex; /*  //srollable */
+  display: flex; /*  //scrollable */
   flex-direction: column;
   animation: bg 40s linear infinite;
-}@keyframes bg{
-  0%,100%{
+}
+@keyframes bg {
+  0%,
+  100% {
     background-position: 100% 50%;
-
-}
-50%{
+  }
+  50% {
     background-position: 50% 0%;
-}
-
+  }
 }
 .container h1 {
   z-index: 1;
@@ -211,11 +208,12 @@ li a {
 .songName,
 .artist {
   text-transform: capitalize;
-}.artist{
+}
+.artist {
   width: 95%;
   white-space: nowrap;
   overflow: hidden;
-  text-overflow:ellipsis ;
+  text-overflow: ellipsis;
 }
 
 .song .song-controls .btn {
@@ -233,7 +231,7 @@ li a {
 }
 /*controls */
 
-.contorls {
+.controls {
   z-index: 10;
   position: fixed;
   bottom: 0;
@@ -272,9 +270,9 @@ li a {
   position: relative;
   overflow: hidden;
   padding-left: 5px;
-  width:220px;
+  width: 220px;
   text-transform: capitalize;
-  margin-left:17px;
+  margin-left: 17px;
 }
 
 .bar {
@@ -467,10 +465,15 @@ li a {
   .brand span {
     display: none;
   }
-  .contorls {
-    height: 100px;
+  .controls {
+    height: 95px;
   }
   .seekbar {
     margin-top: -35px;
+  }
+}
+@media screen and (max-height: 830px) {
+  .container {
+    height: calc(67vh);
   }
 }
