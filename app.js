@@ -1,53 +1,39 @@
 //this is the working of the app
 // song are in song.js file
 // app.js
-// INPORT SONGS
-import  {songs} from "./song.js";
-//CLEARING CONSOLE
-window.addEventListener("message", (event) => {
-  if (
-    event.data &&
-    event.data.source === "console-api" &&
-    event.data.level === "warning"
-  ) {
-    console.clear();
-  }
-});
+// IMPORT SONGS
+import { songs } from "./song.js";
+
 //about banner
-let aboutbanner = document.querySelector(".about_box");
-let aboutbtn = document.getElementById("about");
-let aboutbanner_close_btn=document.querySelector(".close");
+let aboutBanner = document.querySelector(".about_box");
+let aboutButton = document.getElementById("about");
+let aboutBanner_close_btn = document.querySelector(".close");
 
-// functon to activate the about banner 
-aboutbtn.addEventListener("click", function() {
-    aboutbanner.classList.toggle("active");
+// function to activate the about banner 
+aboutButton.addEventListener("click", function () {
+  aboutBanner.classList.toggle("active");
 });
-// functon to close the about banner when the X is cliked
-aboutbanner_close_btn.addEventListener("click", function() {
-    aboutbanner.classList.remove("active");
+// function to close the about banner when the X is clicked
+aboutBanner_close_btn.addEventListener("click", () => {
+  aboutBanner.classList.remove("active");
 });
 
-
-// window.addEventListener("click",()=>{
-//   // if(aboutbanner.hasAttribute("active"))
-//   aboutbanner.classList.add("active");
-// })
 //LOADING SCREEN
 window.onload = function () {
-  let controls = (document.querySelector(".contorls").style.display = "none");
-  controls = document.querySelector(".contorls").style.visibility = "hidden";
+  let controls = document.querySelector(".controls").style.display = "none";
+  controls = document.querySelector(".controls").style.visibility = "hidden";
   setTimeout(() => {
     document.querySelector(".load").style.display = "none";
     document.getElementById("loadImg").style.display = "none";
-    controls = document.querySelector(".contorls").style.display = "flex";
-    controls = document.querySelector(".contorls").style.visibility = "visible";
+    controls = document.querySelector(".controls").style.display = "flex";
+    controls = document.querySelector(".controls").style.visibility = "visible";
   });
 };
 
 document.addEventListener("DOMContentLoaded", () => {
   console.log("WELCOME TO SPOTIFY");
 
-  //DECALRING VARIABLE
+  //DECLARING VARIABLE
   let songIndex = 0;
   let audioelem = new Audio(`song/${songIndex + 1}.mp3`);
   let masterPlay = document.getElementById("masterPlay");
@@ -59,11 +45,11 @@ document.addEventListener("DOMContentLoaded", () => {
   let timer = document.getElementById("timer");
   let fullTimer = document.getElementById("full-timer");
 
-  //ASSINGNIG DEFAULT
+  //ASSIGNING DEFAULT
   masterSongName.innerHTML = songs[0].songName;
   masterSongImg.src = songs[0].coverPath;
   let songList = document.querySelector(".song-list");
-  //CEATING SONGS ITEM AS PER THE SONG LIST
+  //CHEATING SONGS ITEM AS PER THE SONG LIST
   songs.forEach((item, index) => {
     let songItem = `
     <div class="song-item">
@@ -82,13 +68,10 @@ document.addEventListener("DOMContentLoaded", () => {
     </div>
     </div>
     </div>`;
-    songList.insertAdjacentHTML("beforeend", songItem); //ADING TO HTML
+    songList.insertAdjacentHTML("beforeend", songItem); //ADDING TO HTML
   });
   //no use for this thing 
-  let listBtn = document.querySelector(".song-item ");
-  listBtn.addEventListener("click", () => {
-    console.log("cliked");
-  });
+ 
 
   //DEFAULT
   let songitems = Array.from(document.getElementsByClassName("song"));
@@ -100,7 +83,7 @@ document.addEventListener("DOMContentLoaded", () => {
   //MASTER PLAY IN THE FOOTER
   masterPlay.addEventListener("click", () => {
     if (audioelem.paused || audioelem.currentTime <= 0) {
-      //CHEKKIGN AUDIO is playing
+      //CHECKING AUDIO is playing
       audioelem.play();
       masterPlay.src = "./svg/circle-pause-regular.svg";
       masterSongName.innerHTML = songs[songIndex].songName;
@@ -114,15 +97,14 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     // console.clear();
   });
-  //procesing of full timing of the song
+  //processing of full timing of the song
   const fulltime = () => {
     let totalDurationInSeconds = audioelem.duration;
     if (!isNaN(totalDurationInSeconds) && isFinite(totalDurationInSeconds)) {
       let totalMinutes = Math.floor(totalDurationInSeconds / 60);
       let totalSeconds = Math.floor(totalDurationInSeconds % 60);
-      let totalDurationFormatted = `${totalMinutes}:${
-        totalSeconds < 10 ? "0" : ""
-      }${totalSeconds}`;
+      let totalDurationFormatted = `${totalMinutes}:${totalSeconds < 10 ? "0" : ""
+        }${totalSeconds}`;
       fullTimer.innerHTML = totalDurationFormatted;
     } else {
       fullTimer.innerHTML = "00:00";
@@ -151,7 +133,7 @@ document.addEventListener("DOMContentLoaded", () => {
   progressBar.addEventListener("input", () => {
     audioelem.currentTime = (progressBar.value * audioelem.duration) / 100;
   });
-  //privious btn
+  //previous btn
   prebtn.addEventListener("click", () => {
     if (songIndex > 0) {
       songIndex--;
@@ -190,7 +172,7 @@ document.addEventListener("DOMContentLoaded", () => {
       element.src = "./svg/circle-play-regular.svg";
     });
   };
-  //proccessing of the list song
+  //processing of the list song
   const songplay = Array.from(document.getElementsByClassName("song-play"));
   songplay.forEach((element) => {
     element.addEventListener("click", (event) => {
@@ -245,7 +227,7 @@ document.addEventListener("DOMContentLoaded", () => {
       volumeDown();
     }
   });
-  //volume controle
+  //volume control
   const volumeEvent = () => {
     let soundImg = document.getElementById("soundimg");
     if (soundBar.value > 0) {
@@ -254,7 +236,7 @@ document.addEventListener("DOMContentLoaded", () => {
       soundImg.src = "./svg/volume-xmark-solid.svg";
     }
   };
-  //voolume up forward backward next prevous functions
+  //volume up forward backward next previous functions
   function volumeUp() {
     audioelem.volume += 0.1;
     soundBar.value = audioelem.volume;
