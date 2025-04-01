@@ -1,286 +1,295 @@
-//this is the working of the app
-// song are in song.js file
-// app.js
-// IMPORT SONGS
+//import songs from song.js
 import { songs } from "./song.js";
 
-//about banner
-let aboutBanner = document.querySelector(".about_box");
-let aboutButton = document.getElementById("about");
-let aboutBanner_close_btn = document.querySelector(".close");
 
-// function to activate the about banner 
-aboutButton.addEventListener("click", function () {
-  aboutBanner.classList.toggle("active");
-});
-// function to close the about banner when the X is clicked
-aboutBanner_close_btn.addEventListener("click", () => {
-  aboutBanner.classList.remove("active");
-});
-
-//LOADING SCREEN
-window.onload = function () {
-  let controls = document.querySelector(".controls").style.display = "none";
-  controls = document.querySelector(".controls").style.visibility = "hidden";
+// loading function
+window.onload = () => {
+  document.querySelector('.controls').style.display = 'none';
+  document.querySelector('.controls').style.visibility = 'none';
   setTimeout(() => {
-    document.querySelector(".load").style.display = "none";
-    document.getElementById("loadImg").style.display = "none";
-    controls = document.querySelector(".controls").style.display = "flex";
-    controls = document.querySelector(".controls").style.visibility = "visible";
-  });
-};
-
+    document.querySelector('.load').style.display = 'none';
+    document.querySelector('.controls').style.display = 'flex';
+    document.querySelector('.controls').style.visibility = 'visible';
+  }, 99);
+}
+// when document loads
 document.addEventListener("DOMContentLoaded", () => {
-  console.log("WELCOME TO SPOTIFY");
+  console.warn(' WELCOME TO SMALL SPOTIFY');
 
-  //DECLARING VARIABLE
-  let songIndex = 0;
-  let audioelem = new Audio(`song/${songIndex + 1}.mp3`);
-  let masterPlay = document.getElementById("masterPlay");
-  let prebtn = document.getElementById("prebtn");
-  let nextbtn = document.getElementById("nextbtn");
-  let progressBar = document.getElementById("seekbar");
-  let masterSongName = document.getElementById("masterSongName");
-  let masterSongImg = document.getElementById("masterSongImg");
-  let timer = document.getElementById("timer");
-  let fullTimer = document.getElementById("full-timer");
-
-  //ASSIGNING DEFAULT
-  masterSongName.innerHTML = songs[0].songName;
-  masterSongImg.src = songs[0].coverPath;
+  //  Select DOM Elements
+  //  DECLARE VARIABLES 
+  let songIndex = 0; //this var will update when  click events triggered
   let songList = document.querySelector(".song-list");
-  //CHEATING SONGS ITEM AS PER THE SONG LIST
+  let audioElem = new Audio(`songs/${songIndex + 1}.mp3`);
+  const nextBtn = document.getElementById('nextBtn');// next button
+  let masterPlay = document.getElementById("masterPlay");// main play button
+  const prevBtn = document.getElementById('prevBtn'); //previous button 
+  let progressBar = document.getElementById('seekBar'); // audio progress bar
+  let masterSongName = document.getElementById('master-song-name'); //master song name for big screens
+  let masterSongImg = document.getElementById('master-song-img'); //master image 
+  let timer = document.getElementById('timer');// for show current time of the song
+  let fullTimer = document.getElementById('fullTimer');// for show total length  of the song
+  let soundBar = document.getElementById('sound-bar'); //select the sound bar
+  //for progress function
+  let progress = 0;
+  let isSongPlays;
+
+  //MAKING DEFAULT INITIALIZATION
+  masterSongName.innerHTML = songs[0].songName; //show the  default song name
+  masterSongImg.src = songs[0].coverPath;//show the  default song image
+
+  //creating song by importing each song from an array of objects 
   songs.forEach((item, index) => {
     let songItem = `
     <div class="song-item">
-    <div class="song">
-    <img src="${item.coverPath}" alt="${item.songName}" />
-    <div class="song-info">
-    <h3 class="songName">${item.songName}</h3>
-    <p class="artist">${item.artist}</p>
+        <div class="song">
+            <img src="${item.coverPath}" alt="${item.songName}">
+          <div class="song-info">
+            <h3 class="song-name">${item.songName}</h3>
+            <p class="artist">${item.artist}</p>
+          </div>
+          <span class="song-controls">
+            <img id="${index}" src="./assets/svg/circle-play-regular.svg" alt="PlayBtn" class="btn songPlay">
+          </span>
+        </div>
     </div>
-    <div class="song-controls">
-    <img
-    id="${index}"
-    src="./svg/circle-play-regular.svg"
-    class="btn song-play"
-    />
-    </div>
-    </div>
-    </div>`;
-    songList.insertAdjacentHTML("beforeend", songItem); //ADDING TO HTML
-  });
-  //no use for this thing 
- 
+    `;
+    songList.insertAdjacentHTML("beforeend", songItem)
+  })
 
-  //DEFAULT
-  let songitems = Array.from(document.getElementsByClassName("song"));
-  songitems.forEach((e, i) => {
-    e.getElementsByTagName("img")[0].src = songs[i].coverPath;
-    e.getElementsByClassName("songName")[0].innerHTML = songs[i].songName;
-    e.getElementsByClassName("artist")[0].innerHTML = songs[i].artist;
-  });
-  //MASTER PLAY IN THE FOOTER
-  masterPlay.addEventListener("click", () => {
-    if (audioelem.paused || audioelem.currentTime <= 0) {
-      //CHECKING AUDIO is playing
-      audioelem.play();
-      masterPlay.src = "./svg/circle-pause-regular.svg";
-      masterSongName.innerHTML = songs[songIndex].songName;
-      masterSongImg.src = songs[songIndex].coverPath;
-      // progressBar.value =0;
-    } else {
-      audioelem.pause();
-      masterPlay.src = "./svg/circle-play-regular.svg";
-      masterSongImg.src = songs[songIndex].coverPath;
-      masterSongName.innerHTML = songs[songIndex].songName;
-    }
-    // console.clear();
-  });
-  //processing of full timing of the song
-  const fulltime = () => {
-    let totalDurationInSeconds = audioelem.duration;
+
+  //function to update song timer
+  const updateSongTime = () => {
+    let currentTime = audioElem.currentTime;
+    let minutes = Math.floor(currentTime / 60);
+    let seconds = Math.floor(currentTime % 60);
+    let formattedTime = `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`
+    timer.textContent = formattedTime;
+  }
+  //function to get the fullTime of  song 
+  const getFullTime = () => {
+    let totalDurationInSeconds = audioElem.duration;
     if (!isNaN(totalDurationInSeconds) && isFinite(totalDurationInSeconds)) {
-      let totalMinutes = Math.floor(totalDurationInSeconds / 60);
+      let totalMinutes = Math.floor(totalDurationInSeconds / 60)
       let totalSeconds = Math.floor(totalDurationInSeconds % 60);
-      let totalDurationFormatted = `${totalMinutes}:${totalSeconds < 10 ? "0" : ""
-        }${totalSeconds}`;
-      fullTimer.innerHTML = totalDurationFormatted;
-    } else {
-      fullTimer.innerHTML = "00:00";
+      let totalDurationFormatted = `${totalMinutes}:${totalSeconds < 10 ? "0" : ""}${totalSeconds}`;
+      fullTimer.textContent = totalDurationFormatted;
     }
-    // console.clear();
-  };
+    else {
+      fullTimer.textContent = "00:00";
+    }
+  }
 
-  let progress = 0; // Define progress variable
-  //progress bar
-  audioelem.addEventListener("timeupdate", () => {
-    fulltime();
-    progress = parseInt((audioelem.currentTime / audioelem.duration) * 100);
+  // master play btn configurations
+  masterPlay.addEventListener('click', () => {
+    if (audioElem.paused || audioElem.currentTime <= 0) { //checking the audio is playing or not
+      //if not play the audio
+      audioElem.play();
+
+      masterPlay.src = './assets/svg/circle-pause-regular.svg'; //change the play icon to pause icon
+      masterSongName.innerHTML = songs[songIndex].songName;
+      masterSongImg.src = songs[songIndex].coverPath;
+
+      if (!isSongPlays) {
+        isSongPlays = setInterval(updateSongTime, 1000)
+      }
+    } else { //if the song is playing
+      audioElem.pause();
+      masterPlay.src = './assets/svg/circle-play-regular.svg'; //change the pause icon to play icon
+      masterSongName.innerHTML = songs[songIndex].songName;
+      masterSongImg.src = songs[songIndex].coverPath;
+      // for  progress function 
+      clearInterval(isSongPlays) // clear the interval;
+      isSongPlays = null; // remove the initialized interval
+    }
+  });
+  // for the progress and prevent continues interval calling
+  audioElem.addEventListener("timeupdate", () => {
+    getFullTime(); //update the timer when a song plays
+    progress = parseInt((audioElem.currentTime / audioElem.duration) * 100)
     progressBar.value = progress;
-    function updateSongTimer() {
-      setInterval(() => {
-        let currentTime = audioelem.currentTime;
-        let minutes = Math.floor(currentTime / 60);
-        let seconds = Math.floor(currentTime % 60);
-        let formattedTime = `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
-        timer.innerHTML = formattedTime;
-      }, 1000);
-    }
-    updateSongTimer();
-  });
+    updateSongTime(); //call the function to update the timer when song plays 
+  })
 
-  progressBar.addEventListener("input", () => {
-    audioelem.currentTime = (progressBar.value * audioelem.duration) / 100;
-  });
-  //previous btn
-  prebtn.addEventListener("click", () => {
-    if (songIndex > 0) {
-      songIndex--;
-    } else if (songIndex === 0) {
-      songIndex = songs.length - 1;
-    }
-    audioelem.src = `song/${songIndex + 1}.mp3`;
-    masterSongName.innerHTML = songs[songIndex].songName;
-    masterSongImg.src = songs[songIndex].coverPath;
-    audioelem.currentTime = 0;
-    audioelem.play();
-    masterPlay.src = "./svg/circle-pause-regular.svg";
-  });
-  //next btn
-  nextbtn.addEventListener("click", () => {
-    if (songIndex < songs.length - 1) {
-      songIndex++;
-    } else {
-      songIndex = 0;
-    }
-    audioelem.src = `song/${songIndex + 1}.mp3`;
-    masterSongName.innerHTML = songs[songIndex].songName;
-    masterSongImg.src = songs[songIndex].coverPath;
-    audioelem.currentTime = 0;
-    audioelem.play();
-    masterPlay.src = "./svg/circle-pause-regular.svg";
-  });
-  //if song ended play next
-  audioelem.addEventListener("ended", () => {
-    nextSong();
-  });
-  //for play the song in the list
+
+  // for progress bar changing event (seeking of the audio )
+  progressBar.addEventListener('input', () => {
+    audioElem.currentTime = (progressBar.value * audioElem.duration) / 100;
+  })
+
+  //for making play icon when the song is played  from the list  
+  const songPlay = Array.from(document.getElementsByClassName('songPlay'));
   const makeAllPlay = () => {
-    const songplay = Array.from(document.getElementsByClassName("song-play"));
-    songplay.forEach((element) => {
-      element.src = "./svg/circle-play-regular.svg";
-    });
-  };
-  //processing of the list song
-  const songplay = Array.from(document.getElementsByClassName("song-play"));
-  songplay.forEach((element) => {
-    element.addEventListener("click", (event) => {
-      makeAllPlay();
-      if (audioelem.paused) {
-        songIndex = parseInt(event.target.id);
-        event.target.src = "./svg/circle-pause-regular.svg";
-        masterPlay.src = "./svg/circle-pause-regular.svg";
-        audioelem.src = `song/${songIndex + 1}.mp3`;
-        masterSongName.innerHTML = songs[songIndex].songName;
-        masterSongImg.src = songs[songIndex].coverPath;
-        audioelem.currentTime = 0;
-        audioelem.play();
+    songPlay.forEach((e) => {
+      //updated after the video
+      if (audioElem.played) {
+        e.src = './assets/svg/circle-play-regular.svg'
       } else {
-        songIndex = parseInt(event.target.id);
-        audioelem.src = `song/${songIndex + 1}.mp3`;
-        event.target.src = "./svg/circle-play-regular.svg";
-        masterPlay.src = "./svg/circle-play-regular.svg";
+
+        e.src = './assets/svg/circle-pause-regular.svg'
+      }
+
+    })
+  }
+  //for making play the song from the list 
+  songPlay.forEach((song) => {
+    song.addEventListener('click', () => {
+      makeAllPlay();
+      if (audioElem.paused) {
+        songIndex = parseInt(song.id);
+        song.src = './assets/svg/circle-pause-regular.svg';
+        masterPlay.src = './assets/svg/circle-pause-regular.svg';
+        audioElem.src = `songs/${songIndex + 1}.mp3`;
         masterSongName.innerHTML = songs[songIndex].songName;
         masterSongImg.src = songs[songIndex].coverPath;
-        audioelem.pause();
+        audioElem.currentTime = 0;
+        audioElem.play();
+      } else {
+        songIndex = parseInt(song.id);
+        song.src = './assets/svg/circle-play-regular.svg';
+        masterPlay.src = './assets/svg/circle-play-regular.svg';
+        audioElem.src = `songs/${songIndex + 1}.mp3`;
+        masterSongName.innerHTML = songs[songIndex].songName;
+        masterSongImg.src = songs[songIndex].coverPath;
+        audioElem.pause();
         progressBar.value = progress;
       }
-    });
-  });
-  // for key events
-  let key = " ";
-  document.addEventListener("keyup", (event) => {
-    if (event.key === key) {
-      if (audioelem.paused || audioelem.currentTime <= 0) {
-        audioelem.play();
+    })
+  })
+
+  // control the prev btn
+  prevBtn.addEventListener("click", () => {
+    if (songIndex > 0) {
+      songIndex--;
+    }
+    else if (songIndex === 0) {
+      songIndex = songs.length - 1;
+    }
+    // based on index play current song
+    audioElem.src = `songs/${songIndex + 1}.mp3`;
+    audioElem.play();
+    audioElem.currentTime = 0;
+    masterSongName.innerHTML = songs[songIndex].songName;
+    masterSongImg.src = songs[songIndex].coverPath;
+    masterPlay.src = './assets/svg/circle-pause-regular.svg';
+  })
+  // control the next btn
+  nextBtn.addEventListener("click", () => {
+    if (songIndex < songs.length - 1) { //if current song position less than last song position go to next song 
+      songIndex++;
+    }
+    else { //current song position > || >=   last song position go to first song 
+      songIndex = 0;
+    }
+    // based on index play current song
+    audioElem.src = `songs/${songIndex + 1}.mp3`;
+    audioElem.play();
+    audioElem.currentTime = 0;
+    masterSongName.innerHTML = songs[songIndex].songName;
+    masterSongImg.src = songs[songIndex].coverPath;
+    masterPlay.src = './assets/svg/circle-pause-regular.svg';
+  })
+
+
+  // key functionalities
+  let key = " "; //space key
+  document.addEventListener("keyup", (e) => {
+    if (e.key === key) {
+      if (audioElem.paused || audioElem.currentTime <= 0) {
+        audioElem.play();
         masterSongName.innerHTML = songs[songIndex].songName;
-        masterPlay.src = "./svg/circle-pause-regular.svg";
+        masterPlay.src = './assets/svg/circle-pause-regular.svg';
       } else {
-        audioelem.pause();
-        masterSongName.innerHTML = songs;
-        audioelem.pause();
+        audioElem.pause();
         masterSongName.innerHTML = songs[songIndex].songName;
-        masterPlay.src = "./svg/circle-play-regular.svg";
+        masterPlay.src = './assets/svg/circle-play-regular.svg';
       }
-    } else if (event.key === "ArrowRight") {
-      fastForward();
-    } else if (event.key === "ArrowLeft") {
-      rewind();
-    } else if (event.key.toLowerCase() === "m") {
-      nextSong();
-    } else if (event.key.toLowerCase() === "n") {
-      prevSong();
-    } else if (event.key === "ArrowUp") {
-      volumeUp();
-    } else if (event.key === "ArrowDown") {
-      volumeDown();
     }
-  });
-  //volume control
+    else if (e.key === 'ArrowRight') {
+      fastForward(); //skip song  some sec
+    } else if (e.key === 'ArrowLeft') {
+      rewind(); //backward song sem sec
+    } else if (e.key.toLowerCase() === 'm') {
+      nextSong(); //go next song
+    } else if (e.key.toLowerCase() === 'n') {
+      prevSong();//go previous song
+    } else if (e.key === 'ArrowUp') {
+      volumeUp(); //increase volume
+    } else if (e.key === 'ArrowDown') {
+      volumeDown(); //decrease volume
+    }
+  })
+
+  // volume control for chang the image
   const volumeEvent = () => {
-    let soundImg = document.getElementById("soundimg");
-    if (soundBar.value > 0) {
-      soundImg.src = "./svg/volume-high-solid.svg";
-    } else {
-      soundImg.src = "./svg/volume-xmark-solid.svg";
+    let soundImg = document.getElementById('soundImg');
+    if (soundBar.value > 0.5) {
+      soundImg.src = './assets/svg/volume-high-solid.svg';
+    } else if (soundBar.value >= 0.1 && soundBar.value <= 0.4) {
+      soundImg.src = './assets/svg/volume-low-solid.svg';
+    } else if (soundBar.value == 0) {
+      soundImg.src = './assets/svg/volume-xmark-solid.svg'
     }
-  };
-  //volume up forward backward next previous functions
-  function volumeUp() {
-    audioelem.volume += 0.1;
-    soundBar.value = audioelem.volume;
-    volumeEvent();
-    console.clear();
   }
-  function volumeDown() {
-    audioelem.volume -= 0.1;
-    soundBar.value = audioelem.volume;
+  soundBar.addEventListener('input', () => { //watch changes in audio bar
+
+    audioElem.volume = soundBar.value;
     volumeEvent();
-    console.clear();
+  })
+  // Volume Up Function
+  const volumeUp = () => {
+    audioElem.volume = soundBar.value;
+    if (audioElem.volume < 1) {  // Check if the volume is less than 1
+      audioElem.volume = Math.min(audioElem.volume + 0.1, 1);  // Increase the volume by 0.1 but not exceeding 1
+      soundBar.value = audioElem.volume;  // Update the volume bar
+      volumeEvent();  // call volume change
+    }
   }
 
-  function fastForward() {
-    audioelem.currentTime += 5;
+  // Volume Down Function
+  const volumeDown = () => {
+    audioElem.volume = soundBar.value;
+    if (audioElem.volume > 0) {  // Check if the volume is greater than 0
+      audioElem.volume = Math.max(audioElem.volume - 0.1, 0);  // Decrease the volume by 0.1 but not going below 0
+      soundBar.value = audioElem.volume;  // Update the volume bar
+      volumeEvent();  // Call volume change
+    }
   }
 
-  function rewind() {
-    audioelem.currentTime -= 5;
+
+  //forward and backward 
+  const fastForward = () => {
+    audioElem.currentTime += 5; //increase by 5 seconds
   }
-  function nextSong() {
+  const rewind = () => {
+    audioElem.currentTime -= 5; //decrease by 5 seconds
+  }
+  // PLAY CURRENT SONG FUNCTION
+  const playCurrentSong = () => {
+    audioElem.src = `songs/${songIndex + 1}.mp3`;
+    masterSongName.innerHTML = songs[songIndex].songName;
+    masterSongImg.src = songs[songIndex].coverPath;
+    audioElem.play();
+    audioElem.currentTime = 0;
+    masterPlay.src = './assets/svg/circle-pause-regular.svg';
+  }
+  //prev song and next song by key
+  const nextSong = () => {
     songIndex = (songIndex + 1) % songs.length;
     playCurrentSong();
   }
-
-  function prevSong() {
+  const prevSong = () => {
     songIndex = (songIndex - 1 + songs.length) % songs.length;
     playCurrentSong();
   }
-  function playCurrentSong() {
-    audioelem.src = `song/${songIndex + 1}.mp3`;
-    masterSongName.innerHTML = songs[songIndex].songName;
-    masterSongImg.src = songs[songIndex].coverPath;
-    audioelem.currentTime = 0;
-    audioelem.play();
-    masterPlay.src = "./svg/circle-pause-regular.svg";
-  }
 
-  let soundBar = document.getElementById("soundbar");
-  audioelem.volume = soundBar.value;
-  soundBar.addEventListener("input", () => {
-    audioelem.volume = soundBar.value;
-    console.clear();
-  });
-});
+  //if a songs end will go to next song
+  audioElem.addEventListener('ended', () => {
+    nextSong();
+  })
 
 
+
+
+
+})

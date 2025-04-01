@@ -1,116 +1,104 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="description" content=" music app inspired by spotify "></meta>
-  <meta name="author" content="CODING WITH MAYAVI" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- favicon -->
-    <link rel="apple-touch-icon" sizes="180x180" href="asset/favicon_io/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="asset/favicon_io/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="asset/favicon_io/favicon-16x16.png">
-    <link rel="manifest" href="asset/favicon_io/site.webmanifest">
-    <!-- favicon -->
-  <title>Spotify - Your Favorite Music Is Here</title>
-  <link rel="stylesheet" href="./app.css" />  <!-- Css File  -->
-  
-  <script>
-    const siteName='simple spotify';
-    function playlist() {
-      alert(
-        ` THIS IS AN HTML CSS JAVASCRIPT SIMPLE MUSIC WEB APP \n(LIKE SPOTIFY) \nTHIS PART NOT COMPLETED !  `
-      );
-    }
-  </script>
-</head>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content=" music app inspired by spotify "></meta>
+    <meta name="author" content="CODING WITH MAYAVI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <!-- favicon -->
+      <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon_io/apple-touch-icon.png">
+      <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon_io/favicon-32x32.png">
+      <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon_io/favicon-16x16.png">
+      <link rel="manifest" href="assets/favicon_io/site.webmanifest">
+      <!-- favicon -->
+    <title>Spotify - Your Favorite Music Is Here</title>
+    <link rel="stylesheet" href="./app.css" />  <!-- Css File  -->
+    <script src="./app.js" type="module" defer></script> <!-- javascript File  -->
+  </head>
+  <body>
+    <!-- starting of body -->
+    <header>
+      <ul>
+        <li class="brand">
+         <img src="./assets/logo.png" alt=""><span>Spotify</span>
+        </li>
+          <li><a href="#">Home</a></li>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Playlist</a></li>
+      </ul>
+    </header>
 
-<body>
-  <div class="about_box ">
-    <div class="close">&times;</div>
-    <h1> this is a small music player built in completely in HTML,CSS,JAVASCRIPT<br>
-      it took a lot of time and effort </h1>
-  </div>
-  <style>
-    .load {
+    <!-- Container -->
+
+    <section class="container">
+      <h1>Best for you</h1>
+      <div class="song-list">
+        <!-- for each song here we will render by using javascript , -->
+         <!-- it was so nice while we are having many songs  -->
+    </section>
+    <!-- Song controls play/pause next/prev  sound -->
+    <section class="controls">
+      <div class="mini-song">
+        <img src="./cover_img/after hourse.jpg" alt="" id="master-song-img">
+        <!-- song icon -->
+        <div class="mini-song-info">
+          <marquee behavior="scroll" direction="right" loop='infinite'>
+            <h4 id="master-song-name" class="mini-song-name">
+              <!-- songName --> 
+            </h4>
+          </marquee>
+        </div>
+      </div>
+      <div class="bar">
+        <!-- initial timer -->
+        <div class="timer" id="timer">--:--</div> 
+        <!-- seek bar for control the current song  -->
+        <input type="range" id="seekBar" class="seekBar" value="0" min="0"  title="sweep to adjust"/>
+        
+        <div class="full-timer" id="fullTimer">00:00</div>
+        <div class="sound-bar-control sound">
+          <img id="soundImg" src="./assets/svg/volume-high-solid.svg" alt="">
+          <input type="range"  id="sound-bar" class="sound-bar" min="0" max="1" step='0.1' value="1">
+        </div>
+      </div>
+      <!-- bar closed -->
+       <div class="master-song-controls">
+        <img src="./assets/svg/backward-solid.svg" alt="" class="song-btn" id="prevBtn">
+        <img src="./assets/svg/circle-play-regular.svg" alt="" class="song-btn" id="masterPlay">
+        <img src="./assets/svg/forward-solid.svg" alt="" class="song-btn" id="nextBtn">
+       </div>
+    </section>
+    <div class="load">
+      <!-- paste the code  -->
+      <img id="loadImg" src="./assets/logo.png" alt="" />
+      <br />
+      <h1>Welcome Spotify</h1>
+    </div>
+    <style>
+      /* for loading  */
+      /* copy paste */
+      .load {
       position: absolute;
       overflow: hidden;
       height: 120vh;
       width: 100%;
       background: springgreen;
-      z-index: 10000000000;
+      z-index: 1000;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      pointer-events: none;
     }
 
     #loadImg {
       position: relative;
-
       text-align: center;
       width: 100px;
     }
-
     .load h1 {
       color: rgb(255, 255, 255);
     }
-  </style>
-
-  <header>
-    <ul>
-      <li class="brand">
-        <img src="./asset/logo.png" /> <span>Spotify</span>
-      </li>
-      <li title="Home"><a href="#">Home</a></li>
-      <li title="about" id="about"><a class="mrl" href="#">About</a></li>
-      <li title="PlayList">
-        <a class="mrl" href="javascript:playlist();"><img src="./svg/window-restore-solid.svg" class="playlist"
-            /></a>
-      </li>
-    </ul>
-  </header>
-
-  <section class="container">
-    <h1>Best for you</h1>
-    <div class="song-list">
-      <!-- song -->
-      <!-- generated by html -->
-      <!-- song -->
-  </section> <!-- container close-->
-  <section class="controls">
-    <div class="minisong">
-      <img id="masterSongImg" />
-      <div class="minisong-info">
-        <marquee behavior="scroll" direction="right" loop="infinite">
-          <h4 id="masterSongName" class="minisong-name">
-            <!-- songname -->
-          </h4>
-        </marquee>
-      </div>
-    </div>
-    <div class="bar">
-      <div class="timer" id="timer">--:--</div>
-      <input type="range" class="seekbar" name="seekbar" id="seekbar" value="0" min="0" title="Left/Right Arrow" />
-      <div class="full-timer" id="full-timer">00:00</div>
-      <div class="bar-controls sound" title="Up/Down Arrow ">
-        <img id="soundimg" src="./svg/volume-high-solid.svg" alt="" /><input type="range" class="soundbar"
-          name="seekbar" id="soundbar" min="0" max="1" step="0.1" value="0.5" />
-      </div>
-    </div>
-    <div class="song_controls">
-      <img src="./svg/backward-solid.svg" class="songbtn" id="prebtn" title="N for previous" />
-      <img src="./svg/circle-play-regular.svg" class="songbtn" id="masterPlay" title="space Pause/Play" />
-      <img src="./svg/forward-solid.svg" class="songbtn" id="nextbtn" title="M for next" />
-    </div>
-  </section>
-  <script type="module" src="app.js"></script>
-
-  <!-- <script type="module" src="song.js"></script> -->
-  <div class="load">
-    <img id="loadImg" src="./asset/logo.png" alt="" />
-    <br />
-    <h1>Welcome Spotify</h1>
-  </div>
-</body>
-
+    </style>
+  </body>
 </html>
